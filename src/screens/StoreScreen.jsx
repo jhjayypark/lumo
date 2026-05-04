@@ -6,7 +6,7 @@ import {
   ShoppingBag,
   CaretRight,
 } from '@phosphor-icons/react'
-import { categories, products, stations } from '../data/mock.js'
+import { categories, products, stations, cafeSpecialImage } from '../data/mock.js'
 import ProductCard from '../components/ProductCard.jsx'
 
 export default function StoreScreen({ goto, cart, addToCart }) {
@@ -80,7 +80,7 @@ export default function StoreScreen({ goto, cart, addToCart }) {
           <div
             className="w-[120px] shrink-0"
             style={{
-              backgroundImage: 'url(https://picsum.photos/seed/lumo-battambang-coffee/400/400)',
+              backgroundImage: `url(${cafeSpecialImage})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}

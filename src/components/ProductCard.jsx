@@ -7,7 +7,7 @@ export default function ProductCard({ product, onAdd, qty = 0 }) {
       <div
         className="relative aspect-square rounded-2.5xl overflow-hidden bg-zinc-100"
         style={{
-          backgroundImage: `url(https://picsum.photos/seed/${product.id}-lumo/400/400)`,
+          backgroundImage: `url(${product.image})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           boxShadow: 'inset 0 0 0 0.5px rgba(15,23,42,0.06)',

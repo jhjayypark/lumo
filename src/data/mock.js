@@ -129,6 +129,9 @@ export const categories = [
   { id: 'essentials', label: 'Essentials', icon: '🧴' },
 ]
 
+// Real food photography from Unsplash CDN. All URLs HEAD-checked 200.
+const IMG = (id) => `https://images.unsplash.com/photo-${id}?w=600&h=600&fit=crop&q=80`
+
 export const products = [
   {
     id: 'iced-latte',
@@ -136,7 +139,7 @@ export const products = [
     sub: 'Single origin · Battambang',
     price: 2.8,
     category: 'coffee',
-    color: ['#C9A87C', '#6B4423'],
+    image: IMG('1517701604599-bb29b565090c'),
     badge: 'Bestseller',
   },
   {
@@ -145,7 +148,7 @@ export const products = [
     sub: 'Lemongrass · Brioche',
     price: 4.5,
     category: 'fresh',
-    color: ['#F4D9A4', '#A87332'],
+    image: IMG('1528735602780-2552fd46c7af'),
   },
   {
     id: 'mango-smoothie',
@@ -153,7 +156,7 @@ export const products = [
     sub: 'Kampot mango',
     price: 3.4,
     category: 'drinks',
-    color: ['#FFD166', '#E07A1A'],
+    image: IMG('1623065422902-30a2d299bbe4'),
     badge: 'Seasonal',
   },
   {
@@ -162,7 +165,7 @@ export const products = [
     sub: 'Cold-pressed · 500ml',
     price: 2.2,
     category: 'drinks',
-    color: ['#E8F3E0', '#7FA68A'],
+    image: IMG('1581006852262-e4307cf6283a'),
   },
   {
     id: 'energy-bar',
@@ -170,7 +173,7 @@ export const products = [
     sub: 'Cashew · Palm sugar',
     price: 1.6,
     category: 'snacks',
-    color: ['#D4B896', '#7A5430'],
+    image: IMG('1599058917765-a780eda07a3e'),
   },
   {
     id: 'instant-noodles',
@@ -178,9 +181,12 @@ export const products = [
     sub: 'Khmer beef · Spicy',
     price: 1.2,
     category: 'fresh',
-    color: ['#FF8A65', '#B23A1F'],
+    image: IMG('1569718212165-3a8278d5f624'),
   },
 ]
+
+// Café special hero image (Battambang highlands coffee).
+export const cafeSpecialImage = IMG('1497935586351-b67a49e012bf')
 
 export const initialCart = [
   { productId: 'iced-latte', qty: 1 },

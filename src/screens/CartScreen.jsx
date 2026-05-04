@@ -110,7 +110,7 @@ export default function CartScreen({ goto, cart, setQty }) {
                 <div
                   className="w-12 h-12 rounded-2xl bg-zinc-100 flex items-center justify-center overflow-hidden"
                   style={{
-                    backgroundImage: `url(https://picsum.photos/seed/${i.product.id}-lumo-cart/200/200)`,
+                    backgroundImage: `url(${i.product.image})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}
