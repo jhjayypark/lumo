@@ -113,7 +113,7 @@ export const paymentMethods = [
     label: 'KHQR',
     sub: 'Bakong-compatible',
     recommended: true,
-    badge: 'Most popular in Cambodia',
+    badge: 'Most popular',
     swatch: '#E11E2C',
   },
   {
