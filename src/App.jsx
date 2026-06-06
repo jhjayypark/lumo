@@ -8,16 +8,33 @@ import MapScreen from './screens/MapScreen.jsx'
 import StationDetailScreen from './screens/StationDetailScreen.jsx'
 import ChargingScreen from './screens/ChargingScreen.jsx'
 import StoreScreen from './screens/StoreScreen.jsx'
-import CartScreen from './screens/CartScreen.jsx'
-import RewardsScreen from './screens/RewardsScreen.jsx'
+import WalletScreen from './screens/WalletScreen.jsx'
+import AddCreditScreen from './screens/AddCreditScreen.jsx'
+import KHQRPaymentScreen from './screens/KHQRPaymentScreen.jsx'
 import ProfileScreen from './screens/ProfileScreen.jsx'
 
-import { initialCart } from './data/mock.js'
+import { initialCart, wallet, fmtKHR } from './data/mock.js'
 
 export default function App() {
+  // ─── Cross-screen state ───
   const [screen, setScreen] = useState('home')
-  const [cart, setCart] = useState(initialCart)
 
+  // Wallet
+  const [balance, setBalance] = useState(wallet.available)
+  const [topupAmount, setTopupAmount] = useState(40000)
+  const [paymentMethod, setPaymentMethod] = useState('khqr')
+
+  // KHQR payment state machine
+  const [paymentStatus, setPaymentStatus] = useState('pending') // pending | success | expired
+
+  // Station detail charge option
+  const [chargeOption, setChargeOption] = useState('to80')
+
+  // Store / cart / order
+  const [cart, setCart] = useState(initialCart)
+  const [orderStage, setOrderStage] = useState('idle') // idle | Received | Preparing | Ready | Delivered
+
+  // ─── Derived ───
   const current = SCREENS.find((s) => s.id === screen) || SCREENS[0]
   const activeTab = current.tab
   const goto = (id) => setScreen(id)
@@ -27,37 +44,54 @@ export default function App() {
       home: 'home',
       charge: 'map',
       store: 'store',
-      rewards: 'rewards',
+      wallet: 'wallet',
       profile: 'profile',
     }
     setScreen(map[tab] || 'home')
   }
 
-  const addToCart = (productId) => {
+  const addToCart = (productId) =>
     setCart((prev) => {
-      const existing = prev.find((p) => p.productId === productId)
-      if (existing) {
+      const found = prev.find((p) => p.productId === productId)
+      if (found) {
         return prev.map((p) =>
           p.productId === productId ? { ...p, qty: p.qty + 1 } : p,
         )
       }
       return [...prev, { productId, qty: 1 }]
     })
-  }
 
-  const setQty = (productId, qty) => {
+  const setQty = (productId, qty) =>
     setCart((prev) => {
       if (qty <= 0) return prev.filter((p) => p.productId !== productId)
       return prev.map((p) => (p.productId === productId ? { ...p, qty } : p))
     })
-  }
 
-  const screenProps = { goto, cart, addToCart, setQty }
+  const applyTopup = () => setBalance((b) => b + topupAmount)
+
+  const screenProps = {
+    goto,
+    balance,
+    cart,
+    addToCart,
+    setQty,
+    orderStage,
+    setOrderStage,
+    amount: topupAmount,
+    setAmount: setTopupAmount,
+    method: paymentMethod,
+    setMethod: setPaymentMethod,
+    status: paymentStatus,
+    setStatus: setPaymentStatus,
+    applyTopup,
+    chargeOption,
+    setChargeOption,
+  }
   const isDark = screen === 'charging'
 
   return (
     <div className="page-bg min-h-[100dvh] w-full">
-      <div className="max-w-[1280px] mx-auto px-8 py-10">
+      <div className="max-w-[1320px] mx-auto px-8 py-10">
         {/* Header */}
         <header className="flex items-center justify-between mb-12">
           <div className="flex items-center gap-4">
@@ -81,7 +115,7 @@ export default function App() {
           <div className="flex items-center gap-2">
             <Pill label="Prototype" />
             <Pill label="iPhone 15 Pro Max" mono />
-            <Pill label="v0.5 · Taste" />
+            <Pill label="v0.6 · Lumo Wallet + KHQR" />
           </div>
         </header>
 
@@ -102,16 +136,16 @@ export default function App() {
                 {screen === 'station' && <StationDetailScreen {...screenProps} />}
                 {screen === 'charging' && <ChargingScreen {...screenProps} />}
                 {screen === 'store' && <StoreScreen {...screenProps} />}
-                {screen === 'cart' && <CartScreen {...screenProps} />}
-                {screen === 'rewards' && <RewardsScreen {...screenProps} />}
+                {screen === 'wallet' && <WalletScreen {...screenProps} />}
+                {screen === 'addcredit' && <AddCreditScreen {...screenProps} />}
+                {screen === 'khqr' && <KHQRPaymentScreen {...screenProps} />}
                 {screen === 'profile' && <ProfileScreen {...screenProps} />}
               </PhoneFrame>
-
             </div>
           </div>
 
-          {/* Right rail — gallery-style notes */}
-          <aside className="w-[260px] shrink-0 self-start sticky top-8 hidden xl:block">
+          {/* Right rail — demo notes + state controls */}
+          <aside className="w-[280px] shrink-0 self-start sticky top-8 hidden xl:block">
             <div className="px-1">
               <div
                 className="text-[10.5px] uppercase text-zinc-500 font-medium"
@@ -132,19 +166,67 @@ export default function App() {
               <div className="mt-5 space-y-3 text-[13px] text-zinc-600 leading-relaxed">
                 <ScreenNotes id={screen} />
               </div>
+            </div>
 
-              <div className="mt-7 pt-5 border-t border-zinc-200 grid grid-cols-2 gap-x-3 gap-y-3">
-                <Chip name="Canvas" hex="#FAFAF9" />
-                <Chip name="Surface" hex="#FFFFFF" />
-                <Chip name="Ink" hex="#09090B" />
-                <Chip name="Accent" hex="#34C759" />
+            {/* Demo controls panel */}
+            <div className="mt-7 pt-5 border-t border-zinc-200 space-y-4 px-1">
+              <div
+                className="text-[10.5px] uppercase text-zinc-500 font-medium"
+                style={{ letterSpacing: '0.08em' }}
+              >
+                Demo controls
               </div>
 
-              <div className="mt-7 pt-5 border-t border-zinc-200 text-[12px] text-zinc-500 leading-relaxed">
-                Geist · single accent · soft diffusion shadow · dividers over
-                cards · Phosphor icons. No emojis, no gradients on type, no
-                purple glow.
+              {/* Wallet balance state */}
+              <div>
+                <div className="text-[12px] text-zinc-600 mb-1.5 flex items-center justify-between">
+                  <span>Wallet balance</span>
+                  <span className="font-mono tabular-nums text-zinc-950 font-semibold">{fmtKHR(balance)}</span>
+                </div>
+                <div className="flex gap-1.5">
+                  <Btn onClick={() => setBalance(15000)}>Low</Btn>
+                  <Btn onClick={() => setBalance(76500)}>Default</Btn>
+                  <Btn onClick={() => setBalance(200000)}>High</Btn>
+                </div>
               </div>
+
+              {/* KHQR payment state */}
+              {screen === 'khqr' && (
+                <div>
+                  <div className="text-[12px] text-zinc-600 mb-1.5">KHQR payment</div>
+                  <div className="flex gap-1.5">
+                    <Btn active={paymentStatus === 'pending'} onClick={() => setPaymentStatus('pending')}>Pending</Btn>
+                    <Btn active={paymentStatus === 'success'} onClick={() => setPaymentStatus('success')}>Success</Btn>
+                    <Btn active={paymentStatus === 'expired'} onClick={() => setPaymentStatus('expired')}>Expired</Btn>
+                  </div>
+                </div>
+              )}
+
+              {/* Order stage state */}
+              {screen === 'store' && (
+                <div>
+                  <div className="text-[12px] text-zinc-600 mb-1.5">Order status</div>
+                  <div className="flex gap-1.5 flex-wrap">
+                    <Btn active={orderStage === 'idle'} onClick={() => setOrderStage('idle')}>Idle</Btn>
+                    <Btn active={orderStage === 'Received'} onClick={() => setOrderStage('Received')}>Received</Btn>
+                    <Btn active={orderStage === 'Preparing'} onClick={() => setOrderStage('Preparing')}>Preparing</Btn>
+                    <Btn active={orderStage === 'Ready'} onClick={() => setOrderStage('Ready')}>Ready</Btn>
+                    <Btn active={orderStage === 'Delivered'} onClick={() => setOrderStage('Delivered')}>Delivered</Btn>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-7 pt-5 border-t border-zinc-200 grid grid-cols-2 gap-x-3 gap-y-3 px-1">
+              <Chip name="Canvas" hex="#FAFAF9" />
+              <Chip name="Surface" hex="#FFFFFF" />
+              <Chip name="Ink" hex="#09090B" />
+              <Chip name="Accent" hex="#34C759" />
+            </div>
+
+            <div className="mt-5 px-1 text-[12px] text-zinc-500 leading-relaxed">
+              Frontend-only prototype. Wallet, KHQR, charging hold, and order
+              status are mocked locally in React state. Switch any state above.
             </div>
           </aside>
         </div>
@@ -183,54 +265,78 @@ function Chip({ name, hex }) {
   )
 }
 
+function Btn({ children, onClick, active }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`text-[11.5px] font-semibold px-2.5 py-1.5 rounded-full press transition-colors ${
+        active
+          ? 'bg-zinc-950 text-white'
+          : 'bg-white text-zinc-700 border border-zinc-200 hover:border-zinc-400'
+      }`}
+    >
+      {children}
+    </button>
+  )
+}
+
 function ScreenNotes({ id }) {
   const map = {
     home: (
       <p>
-        Hero photo card with the nearest station. Two-column quick actions —
-        not three. Active session strip uses a single thin progress line.
+        Wallet pass sits up top so balance is the first thing the user sees.
+        Add Credit and Scan & Pay are one tap away. Smart card pivots into the
+        store flow.
+      </p>
+    ),
+    wallet: (
+      <p>
+        Apple Wallet-pass card, then balance breakdown (available, reserved,
+        promo), recent activity, and the rewards catalog all on one screen.
+      </p>
+    ),
+    addcredit: (
+      <p>
+        Amount presets in KHR with live USD equivalent. KHQR sits at the top
+        of the method list with the "Most popular in Cambodia" badge.
+      </p>
+    ),
+    khqr: (
+      <p>
+        Real KHQR card lineage — red Bakong header, Lumo merchant line, fake
+        QR with finder squares and centered ៛ logo. Use the demo controls to
+        switch Pending / Success / Expired.
       </p>
     ),
     map: (
       <p>
-        Stylised vector map with vibrancy chips. Nearby list is a single
-        container with hairline dividers — no stacked cards.
+        Balance chip top-right keeps wallet context. KHQR filter is one chip.
+        Nearby list lives inside a single bordered container with dividers.
       </p>
     ),
     station: (
       <p>
-        Real photo hero, three-column stat row split by hairlines, divider-only
-        amenity chips. Two CTAs: outline Reserve and filled Start Charging.
+        Wallet hold card explains the temporary deposit. Charging options swap
+        the estimated hold inline. CTA shows the hold amount on the button.
       </p>
     ),
     charging: (
       <p>
-        Off-black canvas (zinc-950, never pure black). Single accent ring,
-        divider-only stats. Suggestion card with capsule combo button.
+        Dark canvas. Wallet hold card splits Reserved / Used / Return — the
+        signature "you only pay for what you use" moment. Drop balance below
+        ៛24,000 to trigger the low-balance warning.
       </p>
     ),
     store: (
       <p>
-        Café-special hero is split-screen (image + text). Products use 2-column
-        gallery with photo placeholders.
-      </p>
-    ),
-    cart: (
-      <p>
-        Pickup method as segmented control. Items in a divided list. Sticky
-        capsule pay button uses ink (not green) per single-accent rule.
-      </p>
-    ),
-    rewards: (
-      <p>
-        Wallet pass with restrained green sweep. Activity in a divided list.
-        Numbers are Geist Mono throughout.
+        Browse + cart + pickup + wallet payment in one scrollable screen. Tap
+        the cart pill to expand. Toggle Order status above to see the stepper.
       </p>
     ),
     profile: (
       <p>
-        iOS Settings rhythm with coloured glyphs. Photo avatar via picsum
-        placeholder. English / Khmer language toggle.
+        Vehicle pass, wallet toggles (auto top-up, low-balance alert), full
+        Cambodia-local payment methods, and EN / Khmer toggle.
       </p>
     ),
   }

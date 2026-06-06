@@ -1,10 +1,19 @@
-import { MagnifyingGlass, Sliders, NavigationArrow, Lightning } from '@phosphor-icons/react'
-import { stations } from '../data/mock.js'
-import StationCard from '../components/StationCard.jsx'
+import {
+  MagnifyingGlass,
+  Sliders,
+  NavigationArrow,
+  Lightning,
+  Coffee,
+  QrCode,
+  CaretRight,
+  MapPin,
+} from '@phosphor-icons/react'
+import { stations, fmtKHR } from '../data/mock.js'
+import BalanceChip from '../components/BalanceChip.jsx'
 
-const FILTERS = ['Available now', 'Ultra Fast', 'Café', '24/7']
+const FILTERS = ['Available now', 'Ultra Fast', 'Café', '24/7', 'KHQR']
 
-export default function MapScreen({ goto }) {
+export default function MapScreen({ goto, balance }) {
   return (
     <div className="pt-[58px] pb-8 animate-rise">
       {/* Header */}
@@ -12,13 +21,16 @@ export default function MapScreen({ goto }) {
         <div className="flex items-center justify-between">
           <h1
             className="font-semibold text-zinc-950 leading-none"
-            style={{ fontSize: 30, letterSpacing: '-0.032em' }}
+            style={{ fontSize: 28, letterSpacing: '-0.032em' }}
           >
             Find a charger
           </h1>
-          <button className="w-9 h-9 rounded-full bg-white border border-zinc-200 flex items-center justify-center press shadow-diffuse">
-            <NavigationArrow size={16} className="text-zinc-700" weight="fill" />
-          </button>
+          <div className="flex items-center gap-2">
+            <BalanceChip balance={balance} onClick={() => goto('wallet')} />
+            <button className="w-9 h-9 rounded-full bg-white border border-zinc-200 flex items-center justify-center press shadow-diffuse">
+              <NavigationArrow size={16} className="text-zinc-700" weight="fill" />
+            </button>
+          </div>
         </div>
 
         {/* Search */}
@@ -49,7 +61,7 @@ export default function MapScreen({ goto }) {
       </div>
 
       {/* Stylised map */}
-      <div className="mt-5 mx-5 h-[260px] rounded-3xl overflow-hidden relative border border-zinc-200/80 shadow-diffuse">
+      <div className="mt-5 mx-5 h-[240px] rounded-3xl overflow-hidden relative border border-zinc-200/80 shadow-diffuse">
         <MapBackground />
         <Pin x="32%" y="42%" station={stations[0]} primary />
         <Pin x="62%" y="30%" station={stations[1]} />
@@ -73,7 +85,7 @@ export default function MapScreen({ goto }) {
         </div>
       </div>
 
-      {/* Grouped list — single container with dividers (skill: prefer dividers over stacked cards) */}
+      {/* Grouped list */}
       <div className="mt-7">
         <div className="px-5 mb-3">
           <div
@@ -91,14 +103,73 @@ export default function MapScreen({ goto }) {
         </div>
         <div className="mx-5 bg-surface border border-zinc-200/80 rounded-3xl overflow-hidden shadow-diffuse divide-y divide-zinc-200/80">
           {stations.map((s) => (
-            <StationCard key={s.id} station={s} onClick={() => goto('station')} />
+            <StationRow key={s.id} station={s} onClick={() => goto('station')} />
           ))}
         </div>
         <div className="px-5 mt-2 text-[11.5px] text-zinc-400">
-          Distances calculated from your current location.
+          Prices in Khmer riel per kilowatt-hour. KHQR accepted at all Lumo stations except Sihanoukville.
         </div>
       </div>
     </div>
+  )
+}
+
+function StationRow({ station, onClick }) {
+  const tone =
+    station.available > 3
+      ? 'text-accent-dark'
+      : station.available > 0
+      ? 'text-amber-600'
+      : 'text-rose-500'
+
+  return (
+    <button
+      onClick={onClick}
+      className="w-full text-left flex items-center gap-3.5 p-4 hover:bg-zinc-50 press transition-colors"
+    >
+      <div
+        className="w-[52px] h-[52px] rounded-2xl shrink-0 overflow-hidden bg-zinc-100"
+        style={{
+          backgroundImage: `url(https://picsum.photos/seed/${station.id}-lumo-station/200/200)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          boxShadow: 'inset 0 0 0 0.5px rgba(15,23,42,0.06)',
+        }}
+      />
+      <div className="flex-1 min-w-0">
+        <div
+          className="font-semibold text-zinc-950 truncate"
+          style={{ fontSize: 16, letterSpacing: '-0.02em' }}
+        >
+          {station.name}
+        </div>
+        <div className="flex items-center gap-1 mt-0.5 text-zinc-500 text-[13px]">
+          <MapPin size={11} weight="fill" />
+          <span className="truncate">{station.address.split(',')[0]}</span>
+        </div>
+        <div className="flex items-center gap-1.5 mt-1.5 text-[11.5px]">
+          <span className={`font-semibold ${tone}`}>
+            {station.available}/{station.total} open
+          </span>
+          {station.ultraFast > 0 && (
+            <span className="bg-zinc-950 text-white px-1.5 py-[1px] rounded-md text-[10px] font-bold tracking-wide">
+              Ultra fast
+            </span>
+          )}
+          <span className="text-zinc-500 font-mono tabular-nums">
+            {fmtKHR(station.pricePerKwh)}/kWh
+          </span>
+          {station.cafe && <Coffee size={11} className="text-zinc-500" weight="fill" />}
+          {station.khqr && <QrCode size={11} className="text-zinc-500" weight="bold" />}
+        </div>
+      </div>
+      <div className="shrink-0 flex items-center gap-1.5">
+        <span className="font-mono text-[14px] tabular-nums text-zinc-700">
+          {station.distanceKm} km
+        </span>
+        <CaretRight size={14} className="text-zinc-300" weight="bold" />
+      </div>
+    </button>
   )
 }
 
@@ -132,26 +203,26 @@ function Pin({ x, y, station, primary = false }) {
 
 function MapBackground() {
   return (
-    <svg viewBox="0 0 400 260" className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice">
+    <svg viewBox="0 0 400 240" className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice">
       <defs>
         <linearGradient id="mapBg" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#F1F2F4" />
           <stop offset="100%" stopColor="#E4E6EA" />
         </linearGradient>
       </defs>
-      <rect width="400" height="260" fill="url(#mapBg)" />
+      <rect width="400" height="240" fill="url(#mapBg)" />
       <path
-        d="M0,170 C80,140 140,200 220,170 C300,140 360,190 400,160 L400,260 L0,260 Z"
+        d="M0,160 C80,130 140,190 220,160 C300,130 360,180 400,150 L400,240 L0,240 Z"
         fill="#D6E5F0"
       />
       <rect x="40" y="50" width="70" height="40" rx="4" fill="#E4EEDA" />
       <rect x="280" y="30" width="60" height="50" rx="4" fill="#E4EEDA" />
       <g stroke="#FFFFFF" strokeWidth="5" strokeLinecap="round">
         <line x1="0" y1="100" x2="400" y2="120" />
-        <line x1="180" y1="0" x2="220" y2="260" />
-        <line x1="0" y1="210" x2="400" y2="190" />
-        <line x1="80" y1="0" x2="100" y2="260" />
-        <line x1="320" y1="0" x2="340" y2="260" />
+        <line x1="180" y1="0" x2="220" y2="240" />
+        <line x1="0" y1="200" x2="400" y2="180" />
+        <line x1="80" y1="0" x2="100" y2="240" />
+        <line x1="320" y1="0" x2="340" y2="240" />
       </g>
       <g fill="#E8ECF1">
         <rect x="20" y="20" width="14" height="14" rx="1" />

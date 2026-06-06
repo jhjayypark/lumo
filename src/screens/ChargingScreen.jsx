@@ -5,15 +5,17 @@ import {
   Plus,
   Coffee,
   Sparkle,
+  WarningCircle,
 } from '@phosphor-icons/react'
-import { charging, stations } from '../data/mock.js'
+import { charging, stations, fmtKHR } from '../data/mock.js'
+import ChargingHoldCard from '../components/ChargingHoldCard.jsx'
 
-// Dark, restrained. Single accent green.
-export default function ChargingScreen({ goto }) {
+export default function ChargingScreen({ goto, balance }) {
   const station = stations.find((s) => s.id === charging.stationId)
   const progress =
     (charging.currentBattery - charging.startBattery) /
     (charging.targetBattery - charging.startBattery)
+  const lowBalance = balance < charging.reservedKhr + 5000
 
   return (
     <div className="text-white pt-[58px] pb-10 px-5 animate-rise">
@@ -26,7 +28,10 @@ export default function ChargingScreen({ goto }) {
           <CaretLeft size={16} weight="bold" />
         </button>
         <div className="text-center">
-          <div className="text-[10.5px] uppercase opacity-55 font-medium" style={{ letterSpacing: '0.06em' }}>
+          <div
+            className="text-[10.5px] uppercase opacity-55 font-medium"
+            style={{ letterSpacing: '0.06em' }}
+          >
             Active session
           </div>
           <div className="font-semibold mt-0.5" style={{ fontSize: 14, letterSpacing: '-0.018em' }}>
@@ -39,7 +44,7 @@ export default function ChargingScreen({ goto }) {
       </div>
 
       {/* Ring */}
-      <div className="mt-9 flex items-center justify-center">
+      <div className="mt-7 flex items-center justify-center">
         <ChargeRing progress={progress} />
       </div>
 
@@ -49,75 +54,92 @@ export default function ChargingScreen({ goto }) {
         {charging.chargerType}
         <span>·</span>
         <span className="font-mono tabular-nums">{charging.speedKw} kW</span>
+        <span>·</span>
+        <span className="font-mono tabular-nums">{charging.energyKwh.toFixed(1)} kWh</span>
       </div>
 
-      {/* Stats — divider row, no boxes */}
-      <div className="mt-9 grid grid-cols-3 divide-x divide-white/10 border-y border-white/10">
-        <BigStat label="Energy" value={charging.energyKwh.toFixed(1)} unit="kWh" />
-        <BigStat label="Cost" value={`$${charging.costUsd.toFixed(2)}`} />
-        <BigStat label="Time left" value={charging.remainingMin} unit="min" />
+      {/* Current cost + remaining time */}
+      <div className="mt-6 grid grid-cols-2 divide-x divide-white/10 border-y border-white/10">
+        <BigStat label="Current cost" value={fmtKHR(charging.usedKhr)} mono />
+        <BigStat label="Time remaining" value={`${charging.remainingMin} min`} mono />
       </div>
 
-      {/* Buttons */}
-      <div className="mt-7 grid grid-cols-2 gap-2.5">
-        <button className="h-12 rounded-full bg-white/8 border border-white/10 text-white font-semibold text-[14.5px] press">
+      {/* Wallet hold — live */}
+      <div className="mt-5 text-zinc-950">
+        <ChargingHoldCard
+          variant="live"
+          reserved={charging.reservedKhr}
+          used={charging.usedKhr}
+        />
+      </div>
+
+      {/* Low balance warning */}
+      {lowBalance && (
+        <div className="mt-3 rounded-3xl bg-rose-500/15 border border-rose-400/30 p-4 flex items-start gap-3">
+          <WarningCircle size={20} weight="fill" className="text-rose-300 shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <div className="font-semibold text-rose-100" style={{ fontSize: 14, letterSpacing: '-0.018em' }}>
+              Balance may be too low to continue
+            </div>
+            <div className="text-[12px] text-rose-200/80 mt-0.5">
+              Your wallet will reach the reserved hold soon. Add credit to avoid an early stop.
+            </div>
+            <button
+              onClick={() => goto('addcredit')}
+              className="mt-2.5 inline-flex items-center gap-1.5 bg-white text-zinc-950 rounded-full pl-3 pr-2 py-1.5 text-[12.5px] font-semibold press"
+            >
+              <Plus size={12} weight="bold" /> Add Credit
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* CTAs */}
+      <div className="mt-5 grid grid-cols-3 gap-2">
+        <button className="h-12 rounded-full bg-white/8 border border-white/10 text-white font-semibold text-[13px] press">
           Stop
         </button>
         <button
           onClick={() => goto('store')}
-          className="h-12 rounded-full bg-accent text-white font-semibold text-[14.5px] press flex items-center justify-center gap-1.5"
+          className="h-12 rounded-full bg-white/8 border border-white/10 text-white font-semibold text-[13px] press flex items-center justify-center gap-1"
         >
-          <Plus size={14} weight="bold" /> Add snacks
+          <Plus size={12} weight="bold" /> Snacks
+        </button>
+        <button
+          onClick={() => goto('addcredit')}
+          className="h-12 rounded-full bg-accent text-white font-semibold text-[13px] press flex items-center justify-center gap-1"
+        >
+          <Plus size={12} weight="bold" /> Credit
         </button>
       </div>
 
-      {/* Smart card */}
+      {/* Smart suggestion */}
       <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.04] p-4">
         <div className="flex gap-3">
           <div className="w-9 h-9 rounded-2xl bg-accent/15 text-accent flex items-center justify-center shrink-0">
             <Sparkle size={16} weight="fill" />
           </div>
           <div className="flex-1">
-            <div className="text-[10.5px] uppercase font-semibold text-accent" style={{ letterSpacing: '0.06em' }}>
+            <div
+              className="text-[10.5px] uppercase font-semibold text-accent"
+              style={{ letterSpacing: '0.06em' }}
+            >
               Suggestion
             </div>
             <div className="mt-1 leading-snug text-balance" style={{ fontSize: 14.5, letterSpacing: '-0.015em' }}>
-              Your car will be ready in 28 min. Want a coffee and a sandwich ready in 10?
+              Your car will be ready in 28 min. Want coffee and a sandwich ready in 10?
             </div>
             <button
-              onClick={() => goto('cart')}
+              onClick={() => goto('store')}
               className="mt-3 inline-flex items-center gap-1.5 bg-white text-zinc-950 rounded-full pl-3 pr-2 py-1.5 text-[13px] font-semibold press"
             >
               <Coffee size={13} weight="regular" />
               Order combo
               <span className="font-mono ml-0.5 bg-accent-soft text-accent-ink rounded-full px-1.5 py-0.5 text-[11px]">
-                $6.30
+                {fmtKHR(22500)}
               </span>
             </button>
           </div>
-        </div>
-      </div>
-
-      {/* Live waveform */}
-      <div className="mt-6">
-        <div className="flex items-baseline justify-between mb-2 text-[11.5px] opacity-55">
-          <span className="uppercase font-medium" style={{ letterSpacing: '0.06em' }}>Live power</span>
-          <span className="font-mono tabular-nums">last 60 s</span>
-        </div>
-        <div className="h-16 rounded-2xl border border-white/10 bg-white/[0.03] px-3 flex items-end gap-[3px] py-2">
-          {Array.from({ length: 48 }).map((_, i) => {
-            const t = i / 48
-            const wave = 0.5 + 0.35 * Math.sin(t * 12) + 0.15 * Math.sin(t * 30 + 1) + 0.05 * Math.cos(t * 4)
-            const h = Math.max(8, wave * 100)
-            const accent = i > 48 - 6
-            return (
-              <span
-                key={i}
-                className={`flex-1 rounded-full ${accent ? 'bg-accent' : 'bg-white/30'}`}
-                style={{ height: `${h}%` }}
-              />
-            )
-          })}
         </div>
       </div>
     </div>
@@ -125,7 +147,7 @@ export default function ChargingScreen({ goto }) {
 }
 
 function ChargeRing({ progress = 0.5 }) {
-  const size = 248
+  const size = 240
   const stroke = 12
   const r = (size - stroke) / 2
   const c = 2 * Math.PI * r
@@ -151,7 +173,7 @@ function ChargeRing({ progress = 0.5 }) {
           Battery
         </div>
         <div className="font-mono tabular-nums leading-none mt-2 flex items-baseline">
-          <span className="font-semibold" style={{ fontSize: 70, letterSpacing: '-0.04em' }}>
+          <span className="font-semibold" style={{ fontSize: 68, letterSpacing: '-0.04em' }}>
             {charging.currentBattery}
           </span>
           <span className="text-[26px] opacity-65 ml-0.5 font-semibold">%</span>
@@ -166,15 +188,14 @@ function ChargeRing({ progress = 0.5 }) {
   )
 }
 
-function BigStat({ label, value, unit }) {
+function BigStat({ label, value, mono }) {
   return (
     <div className="text-center py-4">
       <div className="text-[10.5px] uppercase opacity-55 font-medium" style={{ letterSpacing: '0.06em' }}>
         {label}
       </div>
-      <div className="font-mono tabular-nums mt-1.5">
-        <span className="text-[22px] leading-none font-semibold">{value}</span>
-        {unit && <span className="text-[12px] opacity-55 ml-0.5">{unit}</span>}
+      <div className={`${mono ? 'font-mono' : ''} tabular-nums mt-1.5 leading-none font-semibold`} style={{ fontSize: 22, letterSpacing: '-0.022em' }}>
+        {value}
       </div>
     </div>
   )

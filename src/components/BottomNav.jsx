@@ -1,14 +1,13 @@
-import { House, Lightning, ShoppingBag, Sparkle, User } from '@phosphor-icons/react'
+import { House, Lightning, ShoppingBag, Wallet, User } from '@phosphor-icons/react'
 
 export const TABS = [
   { id: 'home', label: 'Home', Icon: House },
   { id: 'charge', label: 'Charge', Icon: Lightning },
   { id: 'store', label: 'Store', Icon: ShoppingBag },
-  { id: 'rewards', label: 'Rewards', Icon: Sparkle },
+  { id: 'wallet', label: 'Wallet', Icon: Wallet },
   { id: 'profile', label: 'Profile', Icon: User },
 ]
 
-// Solid white, hairline top, 49pt — Apple-clean.
 export default function BottomNav({ active = 'home', onChange = () => {}, dark = false }) {
   const bg = dark ? 'bg-zinc-950' : 'bg-white'
   const sep = dark ? 'shadow-[inset_0_0.5px_0_rgba(255,255,255,0.08)]' : 'hairline-t'

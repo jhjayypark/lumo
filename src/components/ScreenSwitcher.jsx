@@ -4,20 +4,22 @@ import {
   Buildings,
   BatteryCharging,
   ShoppingBag,
-  ShoppingCart,
-  Sparkle,
+  Wallet,
+  QrCode,
+  Plus,
   UserCircle,
 } from '@phosphor-icons/react'
 
 export const SCREENS = [
-  { id: 'home', label: 'Home', sub: 'Dashboard', tab: 'home', Icon: SquaresFour, n: '01' },
-  { id: 'map', label: 'Find Charger', sub: 'Map & nearby', tab: 'charge', Icon: MapTrifold, n: '02' },
-  { id: 'station', label: 'Station Detail', sub: 'BKK1', tab: 'charge', Icon: Buildings, n: '03' },
-  { id: 'charging', label: 'Charging Session', sub: 'In progress', tab: 'charge', Icon: BatteryCharging, n: '04' },
-  { id: 'store', label: 'Store', sub: 'Order food', tab: 'store', Icon: ShoppingBag, n: '05' },
-  { id: 'cart', label: 'Cart & Pickup', sub: 'Checkout', tab: 'store', Icon: ShoppingCart, n: '06' },
-  { id: 'rewards', label: 'Rewards', sub: 'Volt Gold', tab: 'rewards', Icon: Sparkle, n: '07' },
-  { id: 'profile', label: 'Profile', sub: 'Account', tab: 'profile', Icon: UserCircle, n: '08' },
+  { id: 'home',     label: 'Home',           sub: 'Dashboard',          tab: 'home',    Icon: SquaresFour,     n: '01' },
+  { id: 'wallet',   label: 'Wallet',         sub: 'Balance & rewards',  tab: 'wallet',  Icon: Wallet,          n: '02' },
+  { id: 'addcredit',label: 'Add Credit',     sub: 'Top-up flow',        tab: 'wallet',  Icon: Plus,            n: '03' },
+  { id: 'khqr',     label: 'KHQR Payment',   sub: 'Pending · Success',  tab: 'wallet',  Icon: QrCode,          n: '04' },
+  { id: 'map',      label: 'Find Charger',   sub: 'Map & nearby',       tab: 'charge',  Icon: MapTrifold,      n: '05' },
+  { id: 'station',  label: 'Station Detail', sub: 'Start charging',     tab: 'charge',  Icon: Buildings,       n: '06' },
+  { id: 'charging', label: 'Charging',       sub: 'Live · with hold',   tab: 'charge',  Icon: BatteryCharging, n: '07' },
+  { id: 'store',    label: 'Store + Cart',   sub: 'Order + pickup',     tab: 'store',   Icon: ShoppingBag,     n: '08' },
+  { id: 'profile',  label: 'Profile',        sub: 'Account',            tab: 'profile', Icon: UserCircle,      n: '09' },
 ]
 
 export default function ScreenSwitcher({ active, onChange }) {
@@ -34,8 +36,8 @@ export default function ScreenSwitcher({ active, onChange }) {
           className="font-semibold text-zinc-950 leading-[1.05]"
           style={{ fontSize: 26, letterSpacing: '-0.028em' }}
         >
-          Eight screens.
-          <div className="text-zinc-400 font-normal">One story.</div>
+          Nine screens.
+          <div className="text-zinc-400 font-normal">One Cambodia-ready story.</div>
         </div>
       </div>
 
@@ -53,7 +55,9 @@ export default function ScreenSwitcher({ active, onChange }) {
             >
               <div
                 className={`shrink-0 w-8 h-8 rounded-xl flex items-center justify-center transition-colors ${
-                  isActive ? 'bg-zinc-950 text-white' : 'bg-zinc-100 text-zinc-500 group-hover:text-zinc-950'
+                  isActive
+                    ? 'bg-zinc-950 text-white'
+                    : 'bg-zinc-100 text-zinc-500 group-hover:text-zinc-950'
                 }`}
               >
                 <Icon size={16} weight="regular" />
@@ -86,8 +90,9 @@ export default function ScreenSwitcher({ active, onChange }) {
       </nav>
 
       <div className="mt-6 px-1 text-[12px] text-zinc-500 leading-relaxed">
-        Tap the bottom tabs in the phone for the consumer flow, or jump
-        directly to any screen here.
+        Five-tab bottom bar inside the phone: Home / Charge / Store / Wallet /
+        Profile. Add Credit, KHQR Payment, and Station Detail are sub-flows
+        accessed from those tabs.
       </div>
     </aside>
   )
