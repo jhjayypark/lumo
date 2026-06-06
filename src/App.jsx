@@ -34,6 +34,9 @@ export default function App() {
   const [cart, setCart] = useState(initialCart)
   const [orderStage, setOrderStage] = useState('idle') // idle | Received | Preparing | Ready | Delivered
 
+  // Charging session — controls Home hero between "live session" vs "nearest station".
+  const [isCharging, setIsCharging] = useState(true)
+
   // ─── Derived ───
   const current = SCREENS.find((s) => s.id === screen) || SCREENS[0]
   const activeTab = current.tab
@@ -86,6 +89,7 @@ export default function App() {
     applyTopup,
     chargeOption,
     setChargeOption,
+    isCharging,
   }
   const isDark = screen === 'charging'
 
@@ -176,6 +180,17 @@ export default function App() {
               >
                 Demo controls
               </div>
+
+              {/* Charging state — affects Home hero */}
+              {screen === 'home' && (
+                <div>
+                  <div className="text-[12px] text-zinc-600 mb-1.5">Charging session</div>
+                  <div className="flex gap-1.5">
+                    <Btn active={isCharging} onClick={() => setIsCharging(true)}>Live</Btn>
+                    <Btn active={!isCharging} onClick={() => setIsCharging(false)}>Idle</Btn>
+                  </div>
+                </div>
+              )}
 
               {/* Wallet balance state */}
               <div>
@@ -284,9 +299,10 @@ function ScreenNotes({ id }) {
   const map = {
     home: (
       <p>
-        Wallet pass sits up top so balance is the first thing the user sees.
-        Add Credit and Scan & Pay are one tap away. Smart card pivots into the
-        store flow.
+        Charging-first. If a session is live, the hero is the live charging
+        card with circular progress. Otherwise the nearest Lumo station leads.
+        Wallet sits inside the quick actions, not the hero. Low balance
+        triggers a single banner alert.
       </p>
     ),
     wallet: (
