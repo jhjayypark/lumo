@@ -6,18 +6,37 @@ import BottomNav from './BottomNav.jsx'
 // Context for sticky overlay portal target.
 const StickyOverlayContext = createContext(null)
 
-// Use inside a screen to render content pinned above the tab bar (non-scrolling).
-//   <StickyBottom><button>Pay</button></StickyBottom>
-export function StickyBottom({ children, offset = 88 }) {
+// Use inside a screen to render content pinned just above the tab bar.
+// Renders via portal into the PhoneFrame's overlay layer so it stays fixed
+// regardless of scroll position.
+//
+// A subtle gradient fade is rendered above the sticky element so scrolling
+// content doesn't look abruptly cut.
+export function StickyBottom({ children, offset = 12, fade = true, dark = false }) {
   const target = useContext(StickyOverlayContext)
   if (!target) return null
   return createPortal(
-    <div
-      className="absolute left-3 right-3 z-20 pointer-events-auto"
-      style={{ bottom: offset }}
-    >
-      {children}
-    </div>,
+    <>
+      {fade && (
+        <div
+          className="absolute left-0 right-0 pointer-events-none"
+          style={{
+            bottom: offset,
+            height: 56,
+            background: dark
+              ? 'linear-gradient(180deg, rgba(9,9,11,0) 0%, rgba(9,9,11,0.65) 60%, rgba(9,9,11,0.9) 100%)'
+              : 'linear-gradient(180deg, rgba(250,250,249,0) 0%, rgba(250,250,249,0.85) 55%, rgba(250,250,249,0.98) 100%)',
+            transform: 'translateY(0)',
+          }}
+        />
+      )}
+      <div
+        className="absolute left-3 right-3 z-20 pointer-events-auto"
+        style={{ bottom: offset }}
+      >
+        {children}
+      </div>
+    </>,
     target,
   )
 }
