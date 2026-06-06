@@ -24,6 +24,7 @@ import ProductCard from '../components/ProductCard.jsx'
 import BalanceChip from '../components/BalanceChip.jsx'
 import PickupMethodSelector from '../components/PickupMethodSelector.jsx'
 import OrderStatusStepper from '../components/OrderStatusStepper.jsx'
+import { StickyBottom } from '../components/PhoneFrame.jsx'
 
 export default function StoreScreen({
   goto,
@@ -260,9 +261,8 @@ export default function StoreScreen({
         </div>
       )}
 
-      {/* Sticky cart preview */}
       {cartCount > 0 && !showCart && (
-        <div className="absolute bottom-[88px] left-3 right-3 z-20">
+        <StickyBottom>
           <button
             onClick={() => setShowCart(true)}
             className="w-full bg-zinc-950 text-white rounded-full pl-3 pr-2.5 py-2.5 flex items-center justify-between press shadow-lg"
@@ -282,12 +282,11 @@ export default function StoreScreen({
               View cart <CaretRight size={12} weight="bold" />
             </div>
           </button>
-        </div>
+        </StickyBottom>
       )}
 
-      {/* Sticky CTA when cart open */}
       {cartCount > 0 && showCart && (
-        <div className="absolute bottom-[88px] left-3 right-3 z-20">
+        <StickyBottom>
           <button
             onClick={() => setOrderStage('Received')}
             className="w-full bg-zinc-950 text-white rounded-full h-13 py-3.5 flex items-center justify-center gap-2 press font-semibold text-[16px] shadow-lg"
@@ -296,7 +295,7 @@ export default function StoreScreen({
             <span>Pay with Lumo Wallet</span>
             <span className="font-mono tabular-nums opacity-80">{fmtKHR(cartTotal)}</span>
           </button>
-        </div>
+        </StickyBottom>
       )}
     </div>
   )

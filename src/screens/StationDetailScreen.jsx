@@ -17,6 +17,7 @@ import { stations, chargeOptions, fmtKHR } from '../data/mock.js'
 import Pill from '../components/Pill.jsx'
 import BalanceChip from '../components/BalanceChip.jsx'
 import ChargingHoldCard from '../components/ChargingHoldCard.jsx'
+import { StickyBottom } from '../components/PhoneFrame.jsx'
 
 const AMENITY = {
   Restroom: Drop,
@@ -204,23 +205,24 @@ export default function StationDetailScreen({ goto, balance, chargeOption, setCh
         </div>
       </div>
 
-      {/* CTAs */}
-      <div className="absolute bottom-[88px] left-3 right-3 z-20 grid grid-cols-[1fr_2fr] gap-2">
-        <button
-          onClick={() => goto('addcredit')}
-          className="h-13 py-3.5 rounded-full bg-white border border-zinc-200 text-zinc-950 font-semibold text-[14px] press flex items-center justify-center gap-1.5 shadow-lg"
-        >
-          <Plus size={14} weight="bold" /> Credit
-        </button>
-        <button
-          onClick={() => goto('charging')}
-          className="h-13 py-3.5 rounded-full bg-zinc-950 text-white font-semibold text-[15px] press flex items-center justify-center gap-2 shadow-lg"
-        >
-          <Lightning size={15} weight="fill" />
-          <span>Start Charging</span>
-          <span className="font-mono tabular-nums opacity-70">{fmtKHR(opt.holdKhr)}</span>
-        </button>
-      </div>
+      <StickyBottom>
+        <div className="grid grid-cols-[1fr_2fr] gap-2">
+          <button
+            onClick={() => goto('addcredit')}
+            className="h-13 py-3.5 rounded-full bg-white border border-zinc-200 text-zinc-950 font-semibold text-[14px] press flex items-center justify-center gap-1.5 shadow-lg"
+          >
+            <Plus size={14} weight="bold" /> Credit
+          </button>
+          <button
+            onClick={() => goto('charging')}
+            className="h-13 py-3.5 rounded-full bg-zinc-950 text-white font-semibold text-[15px] press flex items-center justify-center gap-2 shadow-lg"
+          >
+            <Lightning size={15} weight="fill" />
+            <span>Start Charging</span>
+            <span className="font-mono tabular-nums opacity-70">{fmtKHR(opt.holdKhr)}</span>
+          </button>
+        </div>
+      </StickyBottom>
     </div>
   )
 }

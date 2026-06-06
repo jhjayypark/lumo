@@ -8,6 +8,7 @@ import {
 } from '../data/mock.js'
 import AmountSelector from '../components/AmountSelector.jsx'
 import PaymentMethodCard from '../components/PaymentMethodCard.jsx'
+import { StickyBottom } from '../components/PhoneFrame.jsx'
 
 export default function AddCreditScreen({ goto, balance, amount, setAmount, method, setMethod }) {
   return (
@@ -136,8 +137,7 @@ export default function AddCreditScreen({ goto, balance, amount, setAmount, meth
         </div>
       </div>
 
-      {/* Sticky CTA */}
-      <div className="absolute bottom-[88px] left-3 right-3 z-20">
+      <StickyBottom>
         <button
           onClick={() => goto('khqr')}
           className="w-full bg-zinc-950 text-white rounded-full h-13 py-3.5 flex items-center justify-center gap-2 press font-semibold text-[16px] shadow-lg"
@@ -145,7 +145,7 @@ export default function AddCreditScreen({ goto, balance, amount, setAmount, meth
           <span>Continue to Payment</span>
           <span className="font-mono tabular-nums opacity-80">{fmtKHR(amount)}</span>
         </button>
-      </div>
+      </StickyBottom>
     </div>
   )
 }

@@ -1,0 +1,227 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e8]: Lumo
+      - generic [ref=e11]:
+        - generic [ref=e12]: Charge. Grab. Go.
+        - generic [ref=e13]: Cambodia's first EV-charging convenience network
+    - generic [ref=e14]:
+      - generic [ref=e15]: Prototype
+      - generic [ref=e16]: iPhone 15 Pro Max
+      - generic [ref=e17]: v0.6 · Lumo Wallet + KHQR
+  - generic [ref=e18]:
+    - complementary [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]: Prototype
+        - generic [ref=e22]:
+          - text: Nine screens.
+          - generic [ref=e23]: One Cambodia-ready story.
+      - navigation [ref=e24]:
+        - button "01 Home Dashboard" [ref=e25] [cursor=pointer]:
+          - img [ref=e27]
+          - generic [ref=e29]:
+            - generic [ref=e30]:
+              - generic [ref=e31]: "01"
+              - generic [ref=e32]: Home
+            - generic [ref=e33]: Dashboard
+        - button "02 Wallet Balance & rewards" [ref=e35] [cursor=pointer]:
+          - img [ref=e37]
+          - generic [ref=e39]:
+            - generic [ref=e40]:
+              - generic [ref=e41]: "02"
+              - generic [ref=e42]: Wallet
+            - generic [ref=e43]: Balance & rewards
+        - button "03 Add Credit Top-up flow" [ref=e44] [cursor=pointer]:
+          - img [ref=e46]
+          - generic [ref=e48]:
+            - generic [ref=e49]:
+              - generic [ref=e50]: "03"
+              - generic [ref=e51]: Add Credit
+            - generic [ref=e52]: Top-up flow
+        - button "04 KHQR Payment Pending · Success" [ref=e53] [cursor=pointer]:
+          - img [ref=e55]
+          - generic [ref=e57]:
+            - generic [ref=e58]:
+              - generic [ref=e59]: "04"
+              - generic [ref=e60]: KHQR Payment
+            - generic [ref=e61]: Pending · Success
+        - button "05 Find Charger Map & nearby" [ref=e62] [cursor=pointer]:
+          - img [ref=e64]
+          - generic [ref=e66]:
+            - generic [ref=e67]:
+              - generic [ref=e68]: "05"
+              - generic [ref=e69]: Find Charger
+            - generic [ref=e70]: Map & nearby
+        - button "06 Station Detail Start charging" [ref=e71] [cursor=pointer]:
+          - img [ref=e73]
+          - generic [ref=e75]:
+            - generic [ref=e76]:
+              - generic [ref=e77]: "06"
+              - generic [ref=e78]: Station Detail
+            - generic [ref=e79]: Start charging
+        - button "07 Charging Live · with hold" [ref=e80] [cursor=pointer]:
+          - img [ref=e82]
+          - generic [ref=e84]:
+            - generic [ref=e85]:
+              - generic [ref=e86]: "07"
+              - generic [ref=e87]: Charging
+            - generic [ref=e88]: Live · with hold
+        - button "08 Store + Cart Order + pickup" [ref=e89] [cursor=pointer]:
+          - img [ref=e91]
+          - generic [ref=e93]:
+            - generic [ref=e94]:
+              - generic [ref=e95]: "08"
+              - generic [ref=e96]: Store + Cart
+            - generic [ref=e97]: Order + pickup
+        - button "09 Profile Account" [ref=e98] [cursor=pointer]:
+          - img [ref=e100]
+          - generic [ref=e102]:
+            - generic [ref=e103]:
+              - generic [ref=e104]: "09"
+              - generic [ref=e105]: Profile
+            - generic [ref=e106]: Account
+      - generic [ref=e107]: "Five-tab bottom bar inside the phone: Home / Charge / Store / Wallet / Profile. Add Credit, KHQR Payment, and Station Detail are sub-flows accessed from those tabs."
+    - generic [ref=e118]:
+      - generic [ref=e119]:
+        - generic [ref=e120]: 9:41
+        - generic [ref=e121]:
+          - img [ref=e122]
+          - img [ref=e127]
+          - img [ref=e131]
+      - generic [ref=e136]:
+        - generic [ref=e138]:
+          - generic [ref=e139]:
+            - generic [ref=e140]: Friday, May 3
+            - heading "Good morning, Jay." [level=1] [ref=e141]
+          - button [ref=e142] [cursor=pointer]:
+            - img [ref=e143]
+        - generic [ref=e145]:
+          - button "Lumo Wallet Lumo Gold Available balance ៛76,500 ≈ $18.75" [ref=e146] [cursor=pointer]:
+            - generic [ref=e148]:
+              - generic [ref=e149]:
+                - generic [ref=e150]:
+                  - generic [ref=e152]: Lumo
+                  - generic [ref=e154]: Wallet
+                - generic [ref=e155]:
+                  - img [ref=e156]
+                  - text: Lumo Gold
+              - generic [ref=e158]:
+                - generic [ref=e159]: Available balance
+                - generic [ref=e160]: ៛76,500
+                - generic [ref=e161]: ≈ $18.75
+          - generic [ref=e162]:
+            - button "Add Credit" [ref=e163] [cursor=pointer]:
+              - img [ref=e164]
+              - text: Add Credit
+            - button "Scan & Pay" [ref=e166] [cursor=pointer]:
+              - img [ref=e167]
+              - text: Scan & Pay
+        - generic [ref=e169]:
+          - heading "Nearby station" [level=3] [ref=e172]
+          - button "Live Café open Nearest station Lumo BKK1 Open 4/6 Distance 1.2 km ETA 7 min Reserve" [ref=e173] [cursor=pointer]:
+            - generic [ref=e174]:
+              - generic [ref=e176]:
+                - generic [ref=e177]:
+                  - img [ref=e178]
+                  - text: Live
+                - generic [ref=e180]: Café open
+              - generic [ref=e181]:
+                - generic [ref=e182]: Nearest station
+                - generic [ref=e183]: Lumo BKK1
+            - generic [ref=e184]:
+              - generic [ref=e185]:
+                - generic [ref=e186]:
+                  - generic [ref=e187]: Open
+                  - generic [ref=e188]: 4/6
+                - generic [ref=e190]:
+                  - generic [ref=e191]: Distance
+                  - generic [ref=e192]: 1.2 km
+                - generic [ref=e194]:
+                  - generic [ref=e195]: ETA
+                  - generic [ref=e196]: 7 min
+              - generic [ref=e197]:
+                - text: Reserve
+                - img [ref=e198]
+        - button "Charging · Bay A3 58% → 80% 28 min ៛17,280" [ref=e201] [cursor=pointer]:
+          - img [ref=e203]
+          - generic [ref=e206]:
+            - generic [ref=e207]: Charging · Bay A3
+            - generic [ref=e208]: 58% → 80%
+          - generic [ref=e211]:
+            - generic [ref=e212]: 28 min
+            - generic [ref=e213]: ៛17,280
+        - generic [ref=e214]:
+          - heading "Quick actions" [level=3] [ref=e217]
+          - generic [ref=e218]:
+            - button "Scan Charger At any Lumo bay" [ref=e219] [cursor=pointer]:
+              - img [ref=e221]
+              - generic [ref=e223]: Scan Charger
+              - generic [ref=e224]: At any Lumo bay
+            - button "Add Credit Balance ៛76,500" [ref=e225] [cursor=pointer]:
+              - img [ref=e227]
+              - generic [ref=e229]: Add Credit
+              - generic [ref=e230]: Balance ៛76,500
+            - button "Order Food Ready in 10 min" [ref=e231] [cursor=pointer]:
+              - img [ref=e233]
+              - generic [ref=e235]: Order Food
+              - generic [ref=e236]: Ready in 10 min
+            - button "Find Station 3 within 5 km" [ref=e237] [cursor=pointer]:
+              - img [ref=e239]
+              - generic [ref=e241]: Find Station
+              - generic [ref=e242]: 3 within 5 km
+        - generic [ref=e245]:
+          - img [ref=e247]
+          - generic [ref=e249]:
+            - generic [ref=e250]: Smart suggestion
+            - generic [ref=e251]: Your car will be ready in 28 min. Want an iced latte ready in 8?
+            - button "Add to order ៛8,500" [ref=e252] [cursor=pointer]:
+              - img [ref=e253]
+              - text: Add to order
+              - generic [ref=e255]: ៛8,500
+        - generic [ref=e256]:
+          - generic [ref=e258]:
+            - heading "Picked for your charge" [level=3] [ref=e260]
+            - button "See all" [ref=e261] [cursor=pointer]
+          - generic [ref=e262]:
+            - generic [ref=e264]:
+              - generic [ref=e265]:
+                - generic [ref=e266]: Bestseller
+                - button [ref=e267] [cursor=pointer]:
+                  - img [ref=e268]
+              - generic [ref=e270]:
+                - generic [ref=e271]:
+                  - generic [ref=e272]: Iced Latte
+                  - generic [ref=e273]: $8500.00
+                - generic [ref=e274]: Single origin · Battambang
+            - generic [ref=e276]:
+              - button [ref=e278] [cursor=pointer]:
+                - img [ref=e279]
+              - generic [ref=e281]:
+                - generic [ref=e282]:
+                  - generic [ref=e283]: Chicken Sandwich
+                  - generic [ref=e284]: $14000.00
+                - generic [ref=e285]: Lemongrass · Brioche
+            - generic [ref=e287]:
+              - button [ref=e289] [cursor=pointer]:
+                - img [ref=e290]
+              - generic [ref=e292]:
+                - generic [ref=e293]:
+                  - generic [ref=e294]: Coconut Water
+                  - generic [ref=e295]: $5500.00
+                - generic [ref=e296]: Cold-pressed · 500ml
+      - generic [ref=e298]:
+        - button "Home" [ref=e299] [cursor=pointer]:
+          - img [ref=e300]
+          - generic [ref=e302]: Home
+        - button "Charge" [ref=e303] [cursor=pointer]:
+          - img [ref=e304]
+          - generic [ref=e306]: Charge
+        - button "Store" [ref=e307] [cursor=pointer]:
+          - img [ref=e308]
+          - generic [ref=e310]: Store
+        - button "Wallet" [ref=e311] [cursor=pointer]:
+          - img [ref=e312]
+          - generic [ref=e314]: Wallet
+        - button "Profile" [ref=e315] [cursor=pointer]:
+          - img [ref=e316]
+          - generic [ref=e318]: Profile
